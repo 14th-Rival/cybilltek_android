@@ -1,0 +1,54 @@
+plugins {
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("androidx.room")
+    id("com.google.devtools.ksp")
+}
+
+android {
+    namespace 'com.dev_enzo.data'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ':domain')
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    ksp(libs.androidx.room.compiler)
+    implementation libs.gson
+    implementation libs.converter.gson
+    implementation libs.retrofit
+    implementation libs.androidx.paging.runtime
+    implementation libs.androidx.room.paging
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+}
